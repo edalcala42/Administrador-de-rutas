@@ -29,7 +29,6 @@ HEADERS += \
     mainwindow.h
 
 FORMS += \
-    grapht.ui \
     mainwindow.ui
 
 # Default rules for deployment.
