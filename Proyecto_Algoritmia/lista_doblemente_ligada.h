@@ -3,8 +3,7 @@
 #include <iostream>
 #include "nodo.h"
 #include "iterador.h"
-#include "cserializable.h"
-#include "visitadeciudad.h"
+#include "ciudad.h"
 #include <fstream>
 
 #define CLSID_LISTA_DOBLEMENTE_LIGADA 1000
@@ -20,19 +19,17 @@ private:
 public:
     Lista_Doblemente_Ligada();
     int GETCLSID();
-    void insertarAlInicio(VisitaDeCiudad &d);
-    void insertarAlFinal(VisitaDeCiudad &d);
-    VisitaDeCiudad eliminarAlInicio();
-    VisitaDeCiudad eliminarAlFinal();
-    VisitaDeCiudad *Buscar(const std::string &ciudad);
-    VisitaDeCiudad Eliminar(const std::string &ciudad);
+    void insertarAlInicio(Ciudad &d);
+    void insertarAlFinal(Ciudad &d);
+    Ciudad eliminarAlInicio();
+    Ciudad eliminarAlFinal();
+    Ciudad *Buscar(const std::string &ciudad);
+    Ciudad Eliminar(const std::string &ciudad);
 
     int size();
     bool isEmpty();
     bool isFull();
     void Imprimir();
-    void Salvar(std::ofstream &out);
-    void Cargar(std::ifstream &in);
     Iterador &Begin();
     Iterador &End();
     Iterador &rBegin();
