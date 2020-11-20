@@ -10,14 +10,14 @@ private:
 
 public:  
     Iterador();
-    void insertarAdelante(const VisitaDeCiudad &f);
-    VisitaDeCiudad eliminarSiguiente();
+    void insertarAdelante(const Ciudad &f);
+    Ciudad eliminarSiguiente();
     void operator = (const Iterador &otro);
     bool operator == (const Iterador &otro);
     bool operator != (const Iterador &otro);
     void operator ++ ();
     void operator -- ();
-    VisitaDeCiudad & operator *();
+    Ciudad & operator *();
     void operator ++(int);
     void operator --(int);
     friend class Lista_Doblemente_Ligada;
