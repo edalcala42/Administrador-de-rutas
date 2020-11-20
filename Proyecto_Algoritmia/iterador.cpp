@@ -10,12 +10,12 @@ void Iterador::setNodo(Nodo *pNodo)
     pActual = pNodo;
 }
 
-void Iterador::insertarAdelante(const VisitaDeCiudad &f)
+void Iterador::insertarAdelante(const Ciudad &f)
 {
     pActual->insertar_adelante(f);
 }
 
-VisitaDeCiudad Iterador::eliminarSiguiente()
+Ciudad Iterador::eliminarSiguiente()
 {
     return pActual->eliminar_adelante();
 }
@@ -45,7 +45,7 @@ void Iterador::operator --()
     pActual = pActual->pAnt;
 }
 
-VisitaDeCiudad &Iterador::operator *()
+Ciudad &Iterador::operator *()
 {
     return pActual->Dato;
 }
