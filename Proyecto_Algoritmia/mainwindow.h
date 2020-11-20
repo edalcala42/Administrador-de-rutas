@@ -6,7 +6,10 @@
 #include <QPainter>
 #include <QMessageBox>
 #include <QDebug>
-#include "graphic.h"
+#include "graphclass.h"
+#include "ciudad.h"
+#include "tablahash.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -20,7 +23,10 @@ public:
     ~MainWindow();
 public slots:
     void NodeHasChanged(QString);
+    void AgregarCiudad();
 private:
     Ui::MainWindow *ui;
+    GraphClass *grafo;
+    TablaHash ciudades;
 };
 #endif // MAINWINDOW_H
