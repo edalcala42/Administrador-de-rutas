@@ -25,6 +25,7 @@ public:
     void Salvar(std::ofstream &out);
     void Cargar(std::ifstream &in);
     Lista_Doblemente_Ligada *GetArregloCiudades();
+    int Max();
 };
 
 #endif
