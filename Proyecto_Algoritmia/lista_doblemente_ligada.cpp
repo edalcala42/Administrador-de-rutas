@@ -13,7 +13,7 @@ int Lista_Doblemente_Ligada::GETCLSID()
     return CLSID_LISTA_DOBLEMENTE_LIGADA;
 }
 
-void Lista_Doblemente_Ligada::insertarAlInicio(VisitaDeCiudad &d)
+void Lista_Doblemente_Ligada::insertarAlInicio(Ciudad &d)
 {
     std::string nombre = d.getNombre();
     if(Buscar(nombre) != nullptr){
@@ -25,7 +25,7 @@ void Lista_Doblemente_Ligada::insertarAlInicio(VisitaDeCiudad &d)
     }
 }
 
-void Lista_Doblemente_Ligada::insertarAlFinal(VisitaDeCiudad &d)
+void Lista_Doblemente_Ligada::insertarAlFinal(Ciudad &d)
 {
     std::string nombre = d.getNombre();
     if(Buscar(nombre) != nullptr){
@@ -37,20 +37,20 @@ void Lista_Doblemente_Ligada::insertarAlFinal(VisitaDeCiudad &d)
     }
 }
 
-VisitaDeCiudad Lista_Doblemente_Ligada::eliminarAlInicio()
+Ciudad Lista_Doblemente_Ligada::eliminarAlInicio()
 {
     return inicio.eliminar_adelante();
 }
 
-VisitaDeCiudad Lista_Doblemente_Ligada::eliminarAlFinal()
+Ciudad Lista_Doblemente_Ligada::eliminarAlFinal()
 {
     return final.pAnt->pAnt->eliminar_adelante();
 }
 
-VisitaDeCiudad *Lista_Doblemente_Ligada::Buscar(const std::string &ciudad)
+Ciudad *Lista_Doblemente_Ligada::Buscar(const std::string &ciudad)
 {
     Iterador it;
-    VisitaDeCiudad *aux = nullptr;
+    Ciudad *aux = nullptr;
     for(it = this->Begin(); it != this->End(); it++){
         if(it.pActual->Dato.getNombre() == ciudad){
             aux = &it.pActual->Dato;
@@ -59,10 +59,10 @@ VisitaDeCiudad *Lista_Doblemente_Ligada::Buscar(const std::string &ciudad)
     return aux;
 }
 
-VisitaDeCiudad Lista_Doblemente_Ligada::Eliminar(const std::string &ciudad)
+Ciudad Lista_Doblemente_Ligada::Eliminar(const std::string &ciudad)
 {
     Iterador it;
-    VisitaDeCiudad aux;
+    Ciudad aux;
     Nodo *nodo = nullptr;
     for(it = this->Begin(); it != this->End(); it++){
         if(it.pActual->Dato.getNombre() == ciudad){
@@ -114,34 +114,6 @@ void Lista_Doblemente_Ligada::Imprimir()
     for(it = this->Begin();it != this->End(); it++){
         std::cout << i << ") " << *it << ". " << std::endl;
         i++;
-    }
-}
-
-void Lista_Doblemente_Ligada::Salvar(std::ofstream &out)
-{
-    Iterador it;
-    out << CLSID_LISTA_DOBLEMENTE_LIGADA << "\n";
-    out << size() << "\n";
-    for(it = this->Begin(); it != this->End(); it++){
-        it.pActual->Dato.Salvar(out);
-    }
-}
-
-void Lista_Doblemente_Ligada::Cargar(std::ifstream &in)
-{
-    int tamanio = 0;
-    in >> tamanio;
-    for(int i=0; i<tamanio; i++){
-        int ClsidCiudad = 0;
-        in >> ClsidCiudad;
-        if(ClsidCiudad != CLSID_VISITADECIUDAD){
-            std::cout << "No se trata de un archivo de ciudades.\n";
-        }
-        else{
-            VisitaDeCiudad ciudad;
-            ciudad.Cargar(in);
-            insertarAlFinal(ciudad);
-        }
     }
 }
 
