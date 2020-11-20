@@ -6,7 +6,7 @@
 #include <QPainter>
 #include <QMessageBox>
 #include <QDebug>
-#include "graphclass.h"
+#include "graphic.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE

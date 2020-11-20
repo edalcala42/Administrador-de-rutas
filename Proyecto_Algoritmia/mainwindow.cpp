@@ -6,16 +6,25 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    GraphClass *grafo=new GraphClass(ui->graphicsView);
+    Graphic *grafo=new Graphic(ui->graphicsView);
     connect(grafo,SIGNAL(callNodeChanged(QString)),this,SLOT(NodeHasChanged(QString)));
     grafo->insertNode("A");
     grafo->insertNode("B");
     grafo->insertNode("C");
     grafo->insertNode("D");
-    grafo->addConnection("A","B");
-    grafo->addConnection("B","C");
-    grafo->addConnection("C","D");
-    grafo->addConnection("A","C");
+    grafo->addConnection("A","B",100);
+    grafo->addConnection("D","A",200);
+    grafo->addConnection("C","D",300);
+    grafo->insertNode("E");
+    grafo->addConnection("A","C",400);
+    grafo->addConnection("D","E",500);
+    grafo->addConnection("D","C",500);
+    grafo->insertNode("F");
+    grafo->addConnection("E","F",600);
+    grafo->insertNode("G");
+    grafo->deleteConnection("A","B");
+    grafo->addConnection("G","F",700);
+    grafo->drawPath("G","F");
 }
 MainWindow::~MainWindow()
 {

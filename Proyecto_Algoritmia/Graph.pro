@@ -17,16 +17,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     ciudad.cpp \
-    grafo.cpp \
-    graphclass.cpp \
+    graphic.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    nodegraphic.cpp
 
 HEADERS += \
     ciudad.h \
-    grafo.h \
-    graphclass.h \
-    mainwindow.h
+    graphic.h \
+    mainwindow.h \
+    nodegraphic.h
 
 FORMS += \
     mainwindow.ui
