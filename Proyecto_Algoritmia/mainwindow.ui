@@ -24,6 +24,49 @@
      </rect>
     </property>
    </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>530</x>
+      <y>80</y>
+      <width>141</width>
+      <height>181</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Insertar Ciudades</string>
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QLineEdit" name="lineEdit_Nombre">
+       <property name="text">
+        <string>Nombre de la ciudad</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLineEdit" name="lineEdit_NumeroEstrellas">
+       <property name="text">
+        <string>Número de estrellas</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLineEdit" name="lineEdit_Costo">
+       <property name="text">
+        <string>Costo de hospedaje</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QPushButton" name="pushButton_AgregarCiudad">
+       <property name="text">
+        <string>Agregar Ciudad</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -31,7 +74,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
