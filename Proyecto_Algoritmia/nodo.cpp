@@ -8,7 +8,7 @@ Nodo::Nodo()
     pAnt = nullptr;
 }
 
-void Nodo::insertar_adelante(const VisitaDeCiudad &d)
+void Nodo::insertar_adelante(const Ciudad &d)
 {
     Nodo *npointer = new Nodo();
     npointer->Dato = d;
@@ -18,9 +18,9 @@ void Nodo::insertar_adelante(const VisitaDeCiudad &d)
     this->pSig = this->pSig->pAnt;
 }
 
-VisitaDeCiudad Nodo::eliminar_adelante()
+Ciudad Nodo::eliminar_adelante()
 {
-    VisitaDeCiudad retrieve;
+    Ciudad retrieve;
     this->pSig = this->pSig->pSig;
     this->pSig->pAnt->pAnt = nullptr;
     this->pSig->pAnt->pSig = nullptr;
