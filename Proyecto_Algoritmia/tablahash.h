@@ -17,14 +17,15 @@ public:
     TablaHash();
     int GETCLSID();
     int GetSize();
-    int fnHash(const Ciudad &elemento);
+    int fnHash(Ciudad &elemento);
     void InsertarElemento(Ciudad &v);
-    Ciudad *Buscar(const Ciudad &elemento);
-    void Eliminar(const Ciudad &elemento);
+    Ciudad *Buscar( Ciudad &elemento);
+    void Eliminar( Ciudad &elemento);
     void Imprimir();
     void Salvar(std::ofstream &out);
     void Cargar(std::ifstream &in);
     Lista_Doblemente_Ligada *GetArregloCiudades();
+    int Max();
 };
 
 #endif
