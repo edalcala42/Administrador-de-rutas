@@ -7,9 +7,12 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    grafo= new GraphClass(ui->graphicsView);
+    grafo= new Graphic(ui->graphicsView);
     connect(grafo,SIGNAL(callNodeChanged(QString)),this,SLOT(NodeHasChanged(QString)));
     connect(this->ui->pushButton_AgregarCiudad, SIGNAL(clicked()), this, SLOT(AgregarCiudad()));
+    ui->cbOption->addItem("------>");
+    ui->cbOption->addItem("<------");
+    ui->cbOption->addItem("<----->");
     //this->ui->pushButton_AgregarCiudad->clicked(true);
     /*Lista_Doblemente_Ligada *aux = ciudades.GetArregloCiudades();
     std::cout << "Ciudades recuperadas: ";
@@ -39,12 +42,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::NodeHasChanged(QString name)
 {
-    QMessageBox message;
-    message.setText(name);
-    message.setIcon(QMessageBox::Information);
-    message.exec();
-
-    qDebug() << name;
+    grafo->eraseSelection();
+    grafo->setSelected(name);
+    int a=name.toInt()-1;
+    if(a>=datos.size())return;
+    ui->lblname->setText(QString::fromStdString(datos[a].getNombre()));
+    ui->lblcost->setText(QString::number(datos[a].getCosto()));
+    ui->lblstars->setText(QString::number(datos[a].getNumeroDeEstrellas()));
 }
 
 void MainWindow::AgregarCiudad(){
@@ -52,11 +56,65 @@ void MainWindow::AgregarCiudad(){
     double costo = this->ui->lineEdit_Costo->text().toDouble();
     unsigned int estrellas = this->ui->lineEdit_NumeroEstrellas->text().toUInt();
     Ciudad aux(nombre, estrellas, costo);
+    //De aqui
+    datos.push_back(aux);
+    grafo->insertNode(QString::number(datos.size()));
+    ActualizarCB();
+    return;
+    //hasta qui se quita XD
     ciudades.InsertarElemento(aux);
     ciudades.Imprimir();
     //GraphClass *grafo=new GraphClass(ui->graphicsView);
     QString qstr = QString::fromStdString(nombre);
-    connect(grafo,SIGNAL(callNodeChanged(QString)),this,SLOT(NodeHasChanged(QString)));
+    //connect(grafo,SIGNAL(callNodeChanged(QString)),this,SLOT(NodeHasChanged(QString)));
     grafo->insertNode(QString::number(ciudades.GetSize()));
     //grafo->insertNode(qstr);
+    ActualizarCB();
+}
+
+void MainWindow::ActualizarCB()
+{
+    //aqui que itere y que en cada iteracion
+    //agregue el nombre a los combobox.
+    ui->cbFrom->clear();
+    ui->cbTo->clear();
+    for(auto &m:datos){
+        ui->cbFrom->addItem(QString::fromStdString(m.getNombre()));
+        ui->cbTo->addItem(QString::fromStdString(m.getNombre()));
+    }
+}
+
+
+void MainWindow::on_btnAddArista_clicked()
+{
+    if(ui->cbOption->currentIndex()==-1||ui->cbOption->currentText()==-1){
+        ui->spbWeight->setValue(0.00);
+        return;
+    }
+    if(ui->cbOption->currentIndex()==0){
+        matrix[QString::number(ui->cbFrom->currentIndex())][QString::number(ui->cbTo->currentIndex())]=ui->spbWeight->value();
+        grafo->addConnection(QString::number(ui->cbFrom->currentIndex()+1),QString::number(ui->cbTo->currentIndex()+1),ui->spbWeight->value());
+    }else if(ui->cbOption->currentIndex()==1){
+        matrix[QString::number(ui->cbTo->currentIndex())][QString::number(ui->cbFrom->currentIndex())]=ui->spbWeight->value();
+        grafo->addConnection(QString::number(ui->cbTo->currentIndex()+1),QString::number(ui->cbFrom->currentIndex()+1),ui->spbWeight->value());
+    }else{
+        matrix[QString::number(ui->cbFrom->currentIndex())][QString::number(ui->cbTo->currentIndex())]=ui->spbWeight->value();
+        grafo->addConnection(QString::number(ui->cbFrom->currentIndex()+1),QString::number(ui->cbTo->currentIndex()+1),ui->spbWeight->value());
+        matrix[QString::number(ui->cbTo->currentIndex())][QString::number(ui->cbFrom->currentIndex())]=ui->spbWeight->value();
+        grafo->addConnection(QString::number(ui->cbTo->currentIndex()+1),QString::number(ui->cbFrom->currentIndex()+1),ui->spbWeight->value());
+    }
+    if(ui->btnShowW->isChecked()){
+        grafo->showTextNode(QString::number(ui->cbFrom->currentIndex()+1),QString::number(ui->cbTo->currentIndex()+1));
+    }
+    ui->spbWeight->setValue(0.00);
+}
+
+void MainWindow::on_btnShowW_clicked()
+{
+    grafo->showWeight();
+}
+
+void MainWindow::on_btnhideW_clicked()
+{
+    grafo->hideWeight();
 }

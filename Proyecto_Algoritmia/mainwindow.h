@@ -6,7 +6,7 @@
 #include <QPainter>
 #include <QMessageBox>
 #include <QDebug>
-#include "graphclass.h"
+#include "graphic.h"
 #include "ciudad.h"
 #include "tablahash.h"
 
@@ -24,9 +24,20 @@ public:
 public slots:
     void NodeHasChanged(QString);
     void AgregarCiudad();
+    void ActualizarCB();
+private slots:
+    void on_btnAddArista_clicked();
+
+    void on_btnShowW_clicked();
+
+    void on_btnhideW_clicked();
+
 private:
     Ui::MainWindow *ui;
-    GraphClass *grafo;
+    Graphic *grafo;
     TablaHash ciudades;
+    std::vector<Ciudad>datos;
+    std::map<QString,std::map<QString,double>>matrix;
+
 };
 #endif // MAINWINDOW_H

@@ -17,6 +17,7 @@ private:
     Iterador m_itEnd;
 
 public:
+    typedef Nodo node;
     Lista_Doblemente_Ligada();
     int GETCLSID();
     void insertarAlInicio(Ciudad &d);
