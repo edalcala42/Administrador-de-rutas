@@ -15,7 +15,7 @@ int TablaHash::GetSize()
     return NumElemCiudades;
 }
 
-int TablaHash::fnHash(const Ciudad &elemento)
+int TablaHash::fnHash( Ciudad &elemento)
 {
     int aux = -1;
     switch(elemento.getNombre().size()){
@@ -86,7 +86,7 @@ void TablaHash::InsertarElemento(Ciudad &v)
     }
 }
 
-Ciudad *TablaHash::Buscar(const Ciudad &elemento)
+Ciudad *TablaHash::Buscar( Ciudad &elemento)
 {
     int posicion = fnHash(elemento);
     Ciudad *direccion = nullptr;
@@ -94,7 +94,7 @@ Ciudad *TablaHash::Buscar(const Ciudad &elemento)
     return direccion;
 }
 
-void TablaHash::Eliminar(const Ciudad &elemento)
+void TablaHash::Eliminar(Ciudad &elemento)
 {
     int posicion = fnHash(elemento);
     Ciudad aux;

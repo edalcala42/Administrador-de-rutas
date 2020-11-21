@@ -17,16 +17,24 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     ciudad.cpp \
-    grafo.cpp \
-    graphclass.cpp \
+    graphic.cpp \
+    iterador.cpp \
+    lista_doblemente_ligada.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    nodegraphic.cpp \
+    nodo.cpp \
+    tablahash.cpp
 
 HEADERS += \
     ciudad.h \
-    grafo.h \
-    graphclass.h \
-    mainwindow.h
+    graphic.h \
+    iterador.h \
+    lista_doblemente_ligada.h \
+    mainwindow.h \
+    nodegraphic.h \
+    nodo.h \
+    tablahash.h
 
 FORMS += \
     mainwindow.ui

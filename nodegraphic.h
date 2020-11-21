@@ -1,5 +1,5 @@
-#ifndef GRAFO_H
-#define GRAFO_H
+#ifndef NODEGRAPHIC_H
+#define NODEGRAPHIC_H
 #include<QGraphicsObject>
 #include <QBrush>
 #include <QPainter>
@@ -9,7 +9,7 @@
 #include<QPixmap>
 //#include "ui_mainwindow.h"
 
-class Grafo: public QGraphicsObject
+class NodeGraphic: public QGraphicsObject
 {Q_OBJECT
 
 private:
@@ -19,8 +19,8 @@ private:
 signals:
     void selectedNode(int,int,int,QString);
 public:
-    Grafo();
-    Grafo(int,int,int,QString);
+    NodeGraphic();
+    NodeGraphic(int,int,int,QString);
     void mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent );
     void mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent );
     QRectF boundingRect()const;
@@ -30,6 +30,8 @@ public:
     int getX() const;
     int getY() const;
     int getTam() const;
+    bool getOver() const;
+    void setOver(bool value);
 };
 
 #endif // GRAFO_H
