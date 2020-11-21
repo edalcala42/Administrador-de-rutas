@@ -16,7 +16,7 @@ void ArrowLine::DrawLineWithArrow(QPainter* painter, QPoint start, QPoint end) {
   painter->setPen(Qt::black);
   painter->setBrush(Qt::black);
   QLineF line(end, start);
-  ouble angle = std::atan2(-line.dy(), line.dx());
+  double angle = std::atan2(-line.dy(), line.dx());
   QPointF arrowP1 = line.p1() + QPointF(sin(angle + M_PI / 3) * arrowSize,
                                         cos(angle + M_PI / 3) * arrowSize);
   QPointF arrowP2 = line.p1() + QPointF(sin(angle + M_PI - M_PI / 3) * arrowSize,
