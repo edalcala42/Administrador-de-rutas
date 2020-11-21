@@ -15,7 +15,7 @@ void Nodo::insertar_adelante(const Ciudad &d)
     npointer->pSig = this->pSig;
     npointer->pAnt = this;
     this->pSig->pAnt = npointer;
-    this->pSig = npointer;
+    this->pSig = this->pSig->pAnt;
 }
 
 Ciudad Nodo::eliminar_adelante()

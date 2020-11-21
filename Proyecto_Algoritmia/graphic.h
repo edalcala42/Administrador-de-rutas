@@ -28,19 +28,15 @@ signals:
 public:
     void insertNode(QString);
     //    void insertCustomNode(QString,QColor,QFont);
-    void addConnection(QString, QString, double);
+    void addConnection(QString, QString, int);
     void deleteConnection(QString,QString);
     //void deleteNode(QString);
     void drawPath(QString,QString);
      //    void drawCustomPath(QString,QString,QPainter);
     void deletePath(QString,QString);
     void setSelected(QString);
-    void showTextNode(QString,QString);
-    void hideTextNode(QString,QString);
     void eraseSelected(QString);
     void clearAll();
-    void showWeight();
-    void hideWeight();
     void eraseSelection();
     //    ~GraphClass();
     Graphic(QGraphicsView*);

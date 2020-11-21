@@ -8,7 +8,6 @@ void Graphic::changedNodeT(int x, int y, int d, QString aux)
 
 void Graphic::insertNode(QString n)
 {
-    if(nodes.count(n))return;
     srand((unsigned)time(0));
     int max=(nodes.size()+5)*30;
     int val = (rand()%(max))-max;
@@ -19,14 +18,9 @@ void Graphic::insertNode(QString n)
     scene->addItem(nuevo);
 }
 
-void Graphic::addConnection(QString a, QString b, double weight)
+void Graphic::addConnection(QString a, QString b,int weight)
 {
     if(!nodes.count(a)||!nodes.count(b))return;
-    if(connections.count(a) && connections[a].count(b)){
-        QString w2=QString::number(weight);
-        connections[a][b].Text->setPlainText(w2);
-        return;
-    }
     NodeGraphic* aux=nodes[a];
     NodeGraphic* aux2=nodes[b];
     std::pair<int,int> z,z2;
@@ -34,7 +28,7 @@ void Graphic::addConnection(QString a, QString b, double weight)
     z2={aux2->getX()+(aux->getTam()/2),aux2->getY()+(aux->getTam()/2)};
     QGraphicsLineItem *line=new QGraphicsLineItem(z.first,z.second,z2.first,z2.second,NULL);
     QPen p;
-    p.setWidth(1);
+    p.setWidth(2);
     line->setZValue(-1);
     line->setPen(p);
     QGraphicsTextItem *text=new QGraphicsTextItem(QString::number(weight),NULL);
@@ -42,16 +36,22 @@ void Graphic::addConnection(QString a, QString b, double weight)
     int y=z.second>z2.second?(z.second-mid):mid+z.second;
     mid=abs(z.first-z2.first)/2;
     int x=z.first>z2.first?(z.first-mid):z.first+mid;
-    if(connections.count(b)&& connections[b].count(a)){
-        text->setPos(QPointF(x-10,y-15));
-    }
-    else{
-        text->setPos(QPointF(x-10,y));
-    }
+    text->setPos(QPointF(x-5,y));
     text->hide();
     scene->addItem(line);
     scene->addItem(text);
-    QPolygonF pp; arrow({z2.first,z2.second},{z.first,z.second},pp);
+    QPolygonF pp;
+    //    double xs=abs(z2.first-z.first);
+    //    double xy=abs(z2.second-z2.first);
+    //    double l=sqrt((xs*xs)+(xy*xy));
+    //    double x5=(xs/l)*15.0;
+    //    double y6=(xy/l)*15.0;
+    //    //double x5=z2.first>z.first?-15.0:15.0;
+    ////    double m=(double(z2.second)-double(z.second))/(double(z2.first)-double(z.first));
+    ////    double y6=z2.second>z.second?double(z2.second)-abs((m)*x5):double(z2.second)+abs((m)*x5);
+    //    int x7=x5,y8=y6;
+    //    arrow({x7+z2.first,y8},{z.first,z.second},pp);
+    arrow({z2.first,z2.second},{z.first,z.second},pp);
     QGraphicsPolygonItem *pt=new QGraphicsPolygonItem(pp);
     connections[a][b].Text=text;
     connections[a][b].Line=line;
@@ -84,7 +84,7 @@ void Graphic::deletePath(QString a, QString b)
 {
     if(!connections.count(a)||!connections[a].count(b))return;
     QPen p;
-    p.setWidth(1);
+    p.setWidth(2);
     connections[a][b].Line->setPen(p);
     connections[a][b].Text->hide();
 }
@@ -94,18 +94,6 @@ void Graphic::setSelected(QString a)
     if(!nodes.count(a))return;
     nodes[a]->setOver(true);
     selectedNodes.push_back(a);
-}
-
-void Graphic::showTextNode(QString a, QString b)
-{
-    if(!connections.count(a)||!connections[a].count(b))return;
-    connections[a][b].Text->show();
-}
-
-void Graphic::hideTextNode(QString a, QString b)
-{
-    if(!connections.count(a)||!connections[a].count(b))return;
-    connections[a][b].Text->hide();
 }
 
 void Graphic::eraseSelected(QString a)
@@ -119,33 +107,14 @@ void Graphic::clearAll()
     scene->clear();
 }
 
-void Graphic::showWeight()
-{
-    for(auto &k:connections){
-        for(auto &m:k.second){
-            m.second.Text->show();
-        }
-    }
-}
-
-void Graphic::hideWeight()
-{
-    for(auto &k:connections){
-        for(auto &m:k.second){
-            m.second.Text->hide();
-        }
-    }
-}
-
 void Graphic::eraseSelection()
 {
     for(auto &n:selectedNodes){
         nodes[n]->setOver(false);
-        nodes[n]->update();
     }
     for(auto &m:path){
         QPen p;
-        p.setWidth(1);
+        p.setWidth(2);
         connections[m.first][m.second].Line->setPen(p);
         connections[m.first][m.second].Text->hide();
     }

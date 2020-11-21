@@ -27,7 +27,7 @@ public:
         lee >> ciudad.Costo;
         return lee;
     }
-    friend std::ostream &operator << (std::ostream &escribe, Ciudad ciudad){
+    friend std::ostream &operator << (std::ostream &escribe, Ciudad &ciudad){
         escribe << "\nNombre: " << ciudad.Nombre;
         escribe << "\nEstrellas: " << ciudad.NumeroDeEstrellas;
         escribe << "\nCosto de hospedaje: " << ciudad.Costo;

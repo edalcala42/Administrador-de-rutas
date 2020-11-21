@@ -79,7 +79,7 @@ void NodeGraphic::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     else
         pen.setColor(QColor(Qt::white));
     painter->setPen(pen);
-    QFont font("Times", 12, QFont::Bold);
+    QFont font("Times", 15, QFont::Bold);
     painter->setFont(font);
     painter->drawText(rec,Qt::AlignCenter,name);
 }

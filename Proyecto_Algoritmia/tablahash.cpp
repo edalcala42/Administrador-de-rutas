@@ -15,7 +15,7 @@ int TablaHash::GetSize()
     return NumElemCiudades;
 }
 
-int TablaHash::fnHash( Ciudad &elemento)
+int TablaHash::fnHash(const Ciudad &elemento)
 {
     int aux = -1;
     switch(elemento.getNombre().size()){
@@ -86,7 +86,7 @@ void TablaHash::InsertarElemento(Ciudad &v)
     }
 }
 
-Ciudad *TablaHash::Buscar( Ciudad &elemento)
+Ciudad *TablaHash::Buscar(const Ciudad &elemento)
 {
     int posicion = fnHash(elemento);
     Ciudad *direccion = nullptr;
@@ -94,7 +94,7 @@ Ciudad *TablaHash::Buscar( Ciudad &elemento)
     return direccion;
 }
 
-void TablaHash::Eliminar(Ciudad &elemento)
+void TablaHash::Eliminar(const Ciudad &elemento)
 {
     int posicion = fnHash(elemento);
     Ciudad aux;
@@ -121,6 +121,3 @@ Lista_Doblemente_Ligada *TablaHash::GetArregloCiudades(){
     return ArregloCiudades;
 }
 
-int TablaHash::Max(){
-    return MAX;
-}
