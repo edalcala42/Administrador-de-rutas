@@ -8,6 +8,7 @@ private:
     std::string Nombre;
     unsigned int NumeroDeEstrellas;
     double Costo;
+    int Nodo;
 
 public:
     Ciudad();
@@ -18,6 +19,8 @@ public:
     unsigned int getNumeroDeEstrellas();
     void setCosto(const double &cost);
     double getCosto();
+    void SetNodo(int &n);
+    int GetNodo();
     friend std::istream &operator >> (std::istream &lee, Ciudad &ciudad){
         std::cout << "\nIngrese el nombre de la ciudad: \n";
         lee >> ciudad.Nombre;

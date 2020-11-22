@@ -41,3 +41,13 @@ double Ciudad::getCosto()
 {
     return Costo;
 }
+
+void Ciudad::SetNodo(int &n)
+{
+    Nodo = n;
+}
+
+int Ciudad::GetNodo()
+{
+    return Nodo;
+}

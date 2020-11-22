@@ -20,6 +20,7 @@ public:
     int fnHash(Ciudad &elemento);
     void InsertarElemento(Ciudad &v);
     Ciudad *Buscar( Ciudad &elemento);
+    int RegresaPosicion(Ciudad &elemento);
     void Eliminar( Ciudad &elemento);
     void Imprimir();
     void Salvar(std::ofstream &out);

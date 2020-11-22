@@ -94,6 +94,12 @@ Ciudad *TablaHash::Buscar( Ciudad &elemento)
     return direccion;
 }
 
+int TablaHash::RegresaPosicion(Ciudad &elemento)
+{
+    int posicion = fnHash(elemento);
+    return posicion;
+}
+
 void TablaHash::Eliminar(Ciudad &elemento)
 {
     int posicion = fnHash(elemento);
