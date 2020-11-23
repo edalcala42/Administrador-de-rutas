@@ -33,12 +33,15 @@ private slots:
     void on_btnhideW_clicked();
 
 private:
-    int eliminar(int i,int j);
+    double getTime(int i,int j);
     Ui::MainWindow *ui;
     Graphic *grafo;
     TablaHash ciudades;
-    std::vector<Ciudad>datos;
-    std::map<QString,std::map<QString,double>>matrix;
+    //std::vector<Ciudad>datos;
+    void updateCityTable();
+    void updateAdjacencyTable();
+    std::map<int,std::map<int,double>>matrix;
+    Ciudad getCiudadFromPos(int pos);
 
 };
 #endif // MAINWINDOW_H

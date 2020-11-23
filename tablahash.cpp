@@ -1,5 +1,10 @@
 #include "tablahash.h"
 
+int TablaHash::getNumElemCiudades() const
+{
+    return NumElemCiudades;
+}
+
 TablaHash::TablaHash()
 {
     NumElemCiudades = 0;

@@ -45,11 +45,12 @@ void MainWindow::NodeHasChanged(QString name)
     grafo->eraseSelection();
     grafo->setSelected(name);
     int a=name.toInt()-1;
-    if(a>=datos.size())return;
+    if(a>=ciudades.Max())return;
     //cout<<"A->B->C->D";
-    ui->lblname->setText(QString::fromStdString(datos[a].getNombre()));
-    ui->lblcost->setText(QString::number(datos[a].getCosto()));
-    ui->lblstars->setText(QString::number(datos[a].getNumeroDeEstrellas()));
+    Ciudad c=getCiudadFromPos(name.toInt());
+    ui->lblname->setText(QString::fromStdString(c.getNombre()));
+    ui->lblcost->setText(QString::number(c.getCosto()));
+    ui->lblstars->setText(QString::number(c.getNumeroDeEstrellas()));
 }
 
 void MainWindow::AgregarCiudad(){
@@ -63,14 +64,21 @@ void MainWindow::AgregarCiudad(){
     //ActualizarCB();
     //return;
     //hasta qui se quita XD
+    int s=ciudades.GetSize();
+    aux.SetNodo(s);
+    if(ciudades.Buscar(aux)!=nullptr){
+        QMessageBox::information(this, "Agregar", "La ciudad ya existe");
+        return;
+    }
+    grafo->insertNode(QString::number(ciudades.GetSize()));
     ciudades.InsertarElemento(aux);
     //ciudades.Imprimir();
     //GraphClass *grafo=new GraphClass(ui->graphicsView);
-    QString qstr = QString::fromStdString(nombre);
+    // QString qstr = QString::fromStdString(nombre);
     //connect(grafo,SIGNAL(callNodeChanged(QString)),this,SLOT(NodeHasChanged(QString)));
-    grafo->insertNode(QString::number(ciudades.GetSize()));
     //grafo->insertNode(qstr);
     ActualizarCB();
+    updateCityTable();
 }
 
 void MainWindow::ActualizarCB()
@@ -82,11 +90,19 @@ void MainWindow::ActualizarCB()
     Lista_Doblemente_Ligada *aux = ciudades.GetArregloCiudades();
     Iterador it;
     std::string nombre;
-    for(int i=0; i<ciudades.Max(); i++){
-        for(it = aux[i].Begin(); it != aux[i].End(); it++){
-            Ciudad a= *it;
-            ui->cbFrom->addItem(QString::fromStdString(a.getNombre()));
-            ui->cbTo->addItem(QString::fromStdString(a.getNombre()));
+    int node=0;
+    while(node<ciudades.getNumElemCiudades()){
+        for(int i=0; i<ciudades.Max(); i++){
+            for(it = aux[i].Begin(); it != aux[i].End(); it++){
+                Ciudad a= *it;
+                if(node==ciudades.getNumElemCiudades())return;
+                if(a.GetNodo()==node){
+                    ui->cbFrom->addItem(QString::fromStdString(a.getNombre()));
+                    ui->cbTo->addItem(QString::fromStdString(a.getNombre()));
+                    node++;
+                }
+            }
+            if(node==ciudades.getNumElemCiudades())return;
         }
     }
     //ui->cbFrom->clear();
@@ -100,26 +116,29 @@ void MainWindow::ActualizarCB()
 
 void MainWindow::on_btnAddArista_clicked()
 {
-    if(ui->cbOption->currentIndex()==-1||ui->cbOption->currentText()==-1){
+    int id1=ui->cbFrom->currentIndex(),id2=ui->cbTo->currentIndex();
+    if(ui->cbFrom->currentIndex()==-1||ui->cbTo->currentIndex()==-1){
         ui->spbWeight->setValue(0.00);
         return;
     }
     if(ui->cbOption->currentIndex()==0){
-        matrix[QString::number(ui->cbFrom->currentIndex())][QString::number(ui->cbTo->currentIndex())]=ui->spbWeight->value();
-        grafo->addConnection(QString::number(ui->cbFrom->currentIndex()+1),QString::number(ui->cbTo->currentIndex()+1),ui->spbWeight->value());
+        matrix[id1][id2]=ui->spbWeight->value();
+        grafo->addConnection(QString::number(id1),QString::number(id2),ui->spbWeight->value());
     }else if(ui->cbOption->currentIndex()==1){
-        matrix[QString::number(ui->cbTo->currentIndex())][QString::number(ui->cbFrom->currentIndex())]=ui->spbWeight->value();
-        grafo->addConnection(QString::number(ui->cbTo->currentIndex()+1),QString::number(ui->cbFrom->currentIndex()+1),ui->spbWeight->value());
+        matrix[id2][id1]=ui->spbWeight->value();
+        grafo->addConnection(QString::number(id2),QString::number(id1),ui->spbWeight->value());
     }else{
-        matrix[QString::number(ui->cbFrom->currentIndex())][QString::number(ui->cbTo->currentIndex())]=ui->spbWeight->value();
-        grafo->addConnection(QString::number(ui->cbFrom->currentIndex()+1),QString::number(ui->cbTo->currentIndex()+1),ui->spbWeight->value());
-        matrix[QString::number(ui->cbTo->currentIndex())][QString::number(ui->cbFrom->currentIndex())]=ui->spbWeight->value();
-        grafo->addConnection(QString::number(ui->cbTo->currentIndex()+1),QString::number(ui->cbFrom->currentIndex()+1),ui->spbWeight->value());
+        matrix[id1][id2]=ui->spbWeight->value();
+        grafo->addConnection(QString::number(id1),QString::number(id2),ui->spbWeight->value());
+        matrix[id2][id1]=ui->spbWeight->value();
+        grafo->addConnection(QString::number(id2),QString::number(id1),ui->spbWeight->value());
     }
     if(ui->btnShowW->isChecked()){
-        grafo->showTextNode(QString::number(ui->cbFrom->currentIndex()+1),QString::number(ui->cbTo->currentIndex()+1));
+        grafo->showTextNode(QString::number(id1),QString::number(id2));
+        grafo->showTextNode(QString::number(id2),QString::number(id1));
     }
     ui->spbWeight->setValue(0.00);
+    updateAdjacencyTable();
 }
 
 void MainWindow::on_btnShowW_clicked()
@@ -132,13 +151,109 @@ void MainWindow::on_btnhideW_clicked()
     grafo->hideWeight();
 }
 
-int  MainWindow::eliminar(int i,int j)
+double MainWindow::getTime(int i,int j)
 {
-    int val=0;
-    if(matrix.count(QString::number(i)) && matrix.count(QString::number(j))){
-        val=matrix[QString::number(i)][QString::number(j)];
+    double val=1e9;
+    if(matrix.count(i) && matrix[i].count(j)){
+        val=matrix[i][j];
     }else{
         val=1e9;
     }
     return val;
+}
+
+void MainWindow::updateCityTable()
+{
+
+    ui->cityTable->setVisible(1);
+    ui->cityTable->setColumnCount(4);
+    ui->cityTable->setRowCount(ciudades.getNumElemCiudades());
+    ui->cityTable->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->cityTable->verticalHeader()->setVisible(false);
+    QStringList labels;
+    labels << "Id" << "Nombre" << "Costo" << "Número de estrellas";
+    ui->cityTable->setHorizontalHeaderLabels(labels);
+    Lista_Doblemente_Ligada *aux = ciudades.GetArregloCiudades();
+    Iterador it;
+    std::string nombre;
+    int node=0,k=0;
+    while(node<ciudades.getNumElemCiudades()){
+        for(int i=0; i<ciudades.Max(); i++){
+            for(it = aux[i].Begin(); it != aux[i].End(); it++){
+                Ciudad a= *it;
+                if(node==ciudades.getNumElemCiudades())return;
+                if(a.GetNodo()==node){
+                    QTableWidgetItem *id =
+                            new QTableWidgetItem(
+                                QString::number(node));
+                    QTableWidgetItem *name =
+                            new QTableWidgetItem(
+                                QString::fromStdString(a.getNombre()));
+                    QTableWidgetItem *cost =
+                            new QTableWidgetItem(
+                                QString::number(a.getCosto()));
+                    QTableWidgetItem *stars =
+                            new QTableWidgetItem(
+                                QString::number(a.getNumeroDeEstrellas()));
+                    ui->cityTable->setItem(k, 0, id);
+                    ui->cityTable->setItem(k, 1, name);
+                    ui->cityTable->setItem(k, 2, cost);
+                    ui->cityTable->setItem(k, 3, stars);
+                    k++;
+                    node++;
+                }
+            }
+            if(node==ciudades.getNumElemCiudades())return;
+        }
+    }
+}
+
+void MainWindow::updateAdjacencyTable()
+{
+    ui->adjacencyTable->setVisible(1);
+    ui->adjacencyTable->setColumnCount(ciudades.getNumElemCiudades()+1);
+    ui->adjacencyTable->setRowCount(ciudades.getNumElemCiudades()+1);
+    ui->adjacencyTable->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->adjacencyTable->verticalHeader()->setVisible(false);
+    ui->adjacencyTable->horizontalHeader()->setVisible(false);
+    int tam=ciudades.getNumElemCiudades();
+    QTableWidgetItem *cost;
+    cost=  new QTableWidgetItem("#");
+    ui->adjacencyTable->setItem(0, 0, cost);
+    for(int m=0;m<tam;m++){
+        cost=  new QTableWidgetItem(
+                    QString::number(m));
+        ui->adjacencyTable->setItem(0, m+1, cost);
+    }
+    for(int i=0;i<tam;i++){
+        cost=  new QTableWidgetItem(
+                    QString::number(i));
+        ui->adjacencyTable->setItem(i+1, 0, cost);
+        for(int j=0;j<tam;j++){
+            if(getTime(i,j)<1e8){
+                cost=  new QTableWidgetItem(
+                            QString::number(getTime(i,j)));
+            }
+            else{
+                cost=  new QTableWidgetItem("∞");
+            }
+            ui->adjacencyTable->setItem(i+1, j+1, cost);
+        }
+    }
+}
+
+Ciudad MainWindow::getCiudadFromPos(int pos)
+{
+    Ciudad a;
+    Lista_Doblemente_Ligada *aux = ciudades.GetArregloCiudades();
+    Iterador it;
+    for(int i=0; i<ciudades.Max(); i++){
+        for(it = aux[i].Begin(); it != aux[i].End(); it++){
+            a= *it;
+            if(a.GetNodo()==pos){
+                return  a;
+            }
+        }
+    }
+    return a;
 }
