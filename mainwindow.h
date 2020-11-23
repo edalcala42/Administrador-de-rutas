@@ -25,6 +25,7 @@ public slots:
     void NodeHasChanged(QString);
     void AgregarCiudad();
     void ActualizarCB();
+    void DeterminarDijkstra();
 private slots:
     void on_btnAddArista_clicked();
 
@@ -38,6 +39,7 @@ private:
     Graphic *grafo;
     TablaHash ciudades;
     //std::vector<Ciudad>datos;
+    void Dijkstra(int &nodoInicial);
     void updateCityTable();
     void updateAdjacencyTable();
     std::map<int,std::map<int,double>>matrix;
