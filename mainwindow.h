@@ -33,6 +33,7 @@ private slots:
     void on_btnhideW_clicked();
 
 private:
+    int eliminar(int i,int j);
     Ui::MainWindow *ui;
     Graphic *grafo;
     TablaHash ciudades;

@@ -46,6 +46,7 @@ void MainWindow::NodeHasChanged(QString name)
     grafo->setSelected(name);
     int a=name.toInt()-1;
     if(a>=datos.size())return;
+    //cout<<"A->B->C->D";
     ui->lblname->setText(QString::fromStdString(datos[a].getNombre()));
     ui->lblcost->setText(QString::number(datos[a].getCosto()));
     ui->lblstars->setText(QString::number(datos[a].getNumeroDeEstrellas()));
@@ -91,8 +92,8 @@ void MainWindow::ActualizarCB()
     //ui->cbFrom->clear();
     //ui->cbTo->clear();
     //for(auto &m:datos){
-        //ui->cbFrom->addItem(QString::fromStdString(m.getNombre()));
-        //ui->cbTo->addItem(QString::fromStdString(m.getNombre()));
+    //ui->cbFrom->addItem(QString::fromStdString(m.getNombre()));
+    //ui->cbTo->addItem(QString::fromStdString(m.getNombre()));
     //}
 }
 
@@ -129,4 +130,15 @@ void MainWindow::on_btnShowW_clicked()
 void MainWindow::on_btnhideW_clicked()
 {
     grafo->hideWeight();
+}
+
+int  MainWindow::eliminar(int i,int j)
+{
+    int val=0;
+    if(matrix.count(QString::number(i)) && matrix.count(QString::number(j))){
+        val=matrix[QString::number(i)][QString::number(j)];
+    }else{
+        val=1e9;
+    }
+    return val;
 }
