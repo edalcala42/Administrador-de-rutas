@@ -6,6 +6,12 @@
 #include <QPainter>
 #include <QMessageBox>
 #include <QDebug>
+#include<algorithm>
+#include<chrono>
+#include<random>
+#include<functional>
+#include<set>
+#include<queue>
 #include "graphic.h"
 #include "ciudad.h"
 #include "tablahash.h"
@@ -32,6 +38,11 @@ private slots:
 
     void on_btnhideW_clicked();
 
+
+    void on_btnprim_clicked();
+
+    void on_btnGenerateTreePrim_clicked();
+
 private:
     double getTime(int i,int j);
     Ui::MainWindow *ui;
@@ -42,6 +53,14 @@ private:
     void updateAdjacencyTable();
     std::map<int,std::map<int,double>>matrix;
     Ciudad getCiudadFromPos(int pos);
-
+    bool isNotdigraph();
+    double prim(int n);
+    void callPrim(int n);
+    void clearMainWindow();
+    std::string getCityName(int n);
+    void addCity(Ciudad &);
+    void addRoutes(int );
+    void addAristaNodes(int, int, double);
+    void changeTableAdjacency(int,int,double);
 };
 #endif // MAINWINDOW_H

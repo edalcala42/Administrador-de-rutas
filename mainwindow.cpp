@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->cbOption->addItem("------>");
     ui->cbOption->addItem("<------");
     ui->cbOption->addItem("<----->");
+    srand(unsigned(time(0)));
     //this->ui->pushButton_AgregarCiudad->clicked(true);
     /*Lista_Doblemente_Ligada *aux = ciudades.GetArregloCiudades();
     std::cout << "Ciudades recuperadas: ";
@@ -33,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     grafo->addConnection("B","C");
     grafo->addConnection("C","D");
     grafo->addConnection("A","C");*/
+    clearMainWindow();
 }
 
 MainWindow::~MainWindow()
@@ -45,7 +47,7 @@ void MainWindow::NodeHasChanged(QString name)
     grafo->eraseSelection();
     grafo->setSelected(name);
     int a=name.toInt()-1;
-    if(a>=ciudades.Max())return;
+    if(a>=ciudades.getNumElemCiudades())return;
     //cout<<"A->B->C->D";
     Ciudad c=getCiudadFromPos(name.toInt());
     ui->lblname->setText(QString::fromStdString(c.getNombre()));
@@ -122,23 +124,51 @@ void MainWindow::on_btnAddArista_clicked()
         return;
     }
     if(ui->cbOption->currentIndex()==0){
-        matrix[id1][id2]=ui->spbWeight->value();
-        grafo->addConnection(QString::number(id1),QString::number(id2),ui->spbWeight->value());
+        if(matrix.count(id1)&&matrix[id1].count(id2)){
+            matrix[id1][id2]=std::min(matrix[id1][id2],ui->spbWeight->value());
+            grafo->changeText(QString::number(id1),QString::number(id2),ui->spbWeight->value());
+            QMessageBox::information(this,"Ruta","La ruta mínima es "+QString::number( matrix[id1][id2]));
+        }else{
+            matrix[id1][id2]=ui->spbWeight->value();
+            grafo->addConnection(QString::number(id1),QString::number(id2),ui->spbWeight->value());
+        }
     }else if(ui->cbOption->currentIndex()==1){
-        matrix[id2][id1]=ui->spbWeight->value();
-        grafo->addConnection(QString::number(id2),QString::number(id1),ui->spbWeight->value());
+        id1=ui->cbTo->currentIndex(),id2=ui->cbFrom->currentIndex();
+        if(matrix.count(id1)&&matrix[id1].count(id2)){
+            matrix[id1][id2]=std::min(matrix[id1][id2],ui->spbWeight->value());
+            grafo->changeText(QString::number(id1),QString::number(id2),ui->spbWeight->value());
+            QMessageBox::information(this,"Ruta","La ruta mínima es "+QString::number( matrix[id1][id2]));
+        }else{
+            matrix[id1][id2]=ui->spbWeight->value();
+            grafo->addConnection(QString::number(id1),QString::number(id2),ui->spbWeight->value());
+        }
     }else{
-        matrix[id1][id2]=ui->spbWeight->value();
-        grafo->addConnection(QString::number(id1),QString::number(id2),ui->spbWeight->value());
-        matrix[id2][id1]=ui->spbWeight->value();
-        grafo->addConnection(QString::number(id2),QString::number(id1),ui->spbWeight->value());
+        id1=ui->cbTo->currentIndex(),id2=ui->cbFrom->currentIndex();
+        if(matrix.count(id1)&&matrix[id1].count(id2)){
+            matrix[id1][id2]=std::min(matrix[id1][id2],ui->spbWeight->value());
+            grafo->changeText(QString::number(id1),QString::number(id2),ui->spbWeight->value());
+            QMessageBox::information(this,"Ruta","La ruta mínima es "+QString::number( matrix[id1][id2]));
+        }else{
+            matrix[id1][id2]=ui->spbWeight->value();
+            grafo->addConnection(QString::number(id1),QString::number(id2),ui->spbWeight->value());
+        }
+        id1=ui->cbFrom->currentIndex(),id2=ui->cbTo->currentIndex();
+        if(matrix.count(id1)&&matrix[id1].count(id2)){
+            matrix[id1][id2]=std::min(matrix[id1][id2],ui->spbWeight->value());
+            grafo->changeText(QString::number(id1),QString::number(id2),ui->spbWeight->value());
+            QMessageBox::information(this,"Ruta","La ruta mínima es "+QString::number( matrix[id1][id2]));
+        }else{
+            matrix[id1][id2]=ui->spbWeight->value();
+            grafo->addConnection(QString::number(id1),QString::number(id2),ui->spbWeight->value());
+        }
     }
     if(ui->btnShowW->isChecked()){
         grafo->showTextNode(QString::number(id1),QString::number(id2));
         grafo->showTextNode(QString::number(id2),QString::number(id1));
     }
+    //updateAdjacencyTable();
+    changeTableAdjacency(id1,id2,ui->spbWeight->value());
     ui->spbWeight->setValue(0.00);
-    updateAdjacencyTable();
 }
 
 void MainWindow::on_btnShowW_clicked()
@@ -224,20 +254,15 @@ void MainWindow::updateAdjacencyTable()
         cost=  new QTableWidgetItem(
                     QString::number(m));
         ui->adjacencyTable->setItem(0, m+1, cost);
-    }
-    for(int i=0;i<tam;i++){
         cost=  new QTableWidgetItem(
-                    QString::number(i));
-        ui->adjacencyTable->setItem(i+1, 0, cost);
-        for(int j=0;j<tam;j++){
-            if(getTime(i,j)<1e8){
-                cost=  new QTableWidgetItem(
-                            QString::number(getTime(i,j)));
-            }
-            else{
-                cost=  new QTableWidgetItem("∞");
-            }
-            ui->adjacencyTable->setItem(i+1, j+1, cost);
+                    QString::number(m));
+        ui->adjacencyTable->setItem(m+1, 0, cost);
+    }
+    for(auto m:matrix){
+        for(auto n:m.second){
+            cost=  new QTableWidgetItem(
+                        QString::number(n.second));
+            ui->adjacencyTable->setItem(m.first+1,n.first+1, cost);
         }
     }
 }
@@ -256,4 +281,170 @@ Ciudad MainWindow::getCiudadFromPos(int pos)
         }
     }
     return a;
+}
+
+bool MainWindow::isNotdigraph()
+{
+    for(auto k:matrix){
+        for(auto m:k.second){
+            if(!matrix.count(m.first)&&!matrix[m.first].count(k.first)){
+
+                return false;
+            }
+            if(matrix[m.first][k.first]!=matrix[k.first][m.first]){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+double MainWindow::prim(int n)
+{
+    ui->lblpath->setPlainText("Ruta: ");
+    struct greaterpair
+    {
+        bool operator() (std::pair<int,std::pair<int,double>> const &a,std::pair<int,std::pair<int,double>> const &b) { return a.second.second > b.second.second; }
+    };
+    std::priority_queue<std::pair<int,std::pair<int,double>>,std::vector<std::pair<int,std::pair<int,double>>>,greaterpair>datos;
+    double suma=0;
+    std::set<int>rec;
+    datos.push({n,{0,0}});
+    QString auxpath;
+    while(datos.size()){
+        std::pair<int,std::pair<int,double>> aux=datos.top();
+        datos.pop();
+        int val=aux.first;
+        if (!rec.count(val)){
+            suma+=aux.second.second;
+            rec.insert(val);
+            grafo->drawPath(QString::number(aux.second.first),QString::number(aux.first));
+            auxpath=ui->lblpath->toPlainText();
+            ui->lblpath->setPlainText(auxpath+QString::number(aux.second.first)+"->"+QString::number(aux.first)+", ");
+            for(auto m:matrix[val]){
+                if(!rec.count(m.first)){
+                    datos.push({m.first,{val,m.second}});
+                }
+            }
+        }
+    }
+    if(rec.size()<ciudades.getNumElemCiudades()){
+        QMessageBox::warning(this,"Ruta cobertora","La ciudad no tiene una ruta cobertora");
+        grafo->eraseSelection();
+    }
+    ui->lblprim->setText("Tiempo mínimo para la ruta cobertora: "+QString::number(suma));
+    return suma;
+}
+
+void MainWindow::callPrim(int n)
+{
+    if(!isNotdigraph()){
+        QMessageBox::warning(this,"Ruta cobertora","La ciudad no tiene una ruta cobertora");
+        return;
+    }
+    prim(n);
+}
+
+void MainWindow::clearMainWindow()
+{
+    ui->lblprim->setText("");
+}
+
+std::string MainWindow::getCityName(int n)
+{
+    std::vector<std::string> citiesName{
+        "Tokio", "Nueva York", "Los Ángeles", "Seúl", "Londres", "París", "Osaka", "Shanghái", "Chicago", "Moscú", "Pekín", "Colonia", "Houston", "Washington D. C.", "São Paulo", "Hong Kong", "Dallas", "Ciudad de México", "Cantón", "Tianjin", "Singapur", "Nagoya", "Shenzhen", "Boston", "Estambul", "Filadelfia", "Suzhou", "San Francisco", "Taipéi", "Yakarta", "Ámsterdam", "Buenos Aires", "Chongqing", "Milán", "Bangkok", "Busan", "Atlanta", "Delhi", "Toronto", "Seattle", "Miami", "Madrid", "Bruselas", "Chengdu", "Wuhan", "Frankfurt", "Sídney", "Múnich", "Hangzhou", "Wuxi", "Minneapolis", "Qingdao", "Detroit", "Phoenix", "Nanjing", "San Diego", "Dalian"};
+
+    if(n>=citiesName.size()){
+        return "Ciudad"+std::to_string(n);
+    }else{
+        return citiesName[n];
+    }
+}
+
+void MainWindow::addCity(Ciudad &aux2)
+{
+    Ciudad aux(aux2.getNombre(),aux2.getNumeroDeEstrellas(),aux2.getCosto());
+    int s=ciudades.GetSize();
+    aux.SetNodo(s);
+    if(ciudades.Buscar(aux)!=nullptr){
+        QMessageBox::information(this, "Agregar", "La ciudad ya existe");
+        return;
+    }
+    grafo->insertNode(QString::number(s));
+    ciudades.InsertarElemento(aux);
+    ActualizarCB();
+    updateCityTable();
+}
+
+void MainWindow::addRoutes(int n)
+{
+    if(n<=0)return;
+    int val=(rand()%n),val2;
+    std::vector<int>dat;
+    for(int i=0;i<n;i++){
+        dat.push_back(i);
+    }
+    while(dat.size()>=2){
+        val2=rand()%dat.size();
+        if(val==val2)continue;
+        addAristaNodes(dat[val],dat[val2],1);
+        dat.erase(dat.begin()+val);
+        if(val<=val2)
+            val=val2-1;
+        else
+            val=val2;
+    }
+}
+
+void MainWindow::addAristaNodes(int a, int b, double c)
+{
+    c=(rand()%10000);
+    c/=100.00;
+    matrix[a][b]=c;
+    matrix[b][a]=c;
+    grafo->addConnection(QString::number(a),QString::number(b),c);
+    grafo->addConnection(QString::number(b),QString::number(a),c);
+
+}
+
+void MainWindow::changeTableAdjacency(int i, int j, double b)
+{
+    ui->adjacencyTable->setRowCount(ciudades.getNumElemCiudades());
+    if(ui->adjacencyTable->rowCount()<=i){
+        ui->adjacencyTable->setRowCount(i+1);
+    }
+    QTableWidgetItem *cost;
+    cost=  new QTableWidgetItem(QString::number(b));
+    ui->adjacencyTable->removeCellWidget(i+1,j+1);
+    ui->adjacencyTable->setItem(i+1,j+1,cost);
+}
+
+void MainWindow::on_btnprim_clicked()
+{
+    callPrim(0);
+}
+
+void MainWindow::on_btnGenerateTreePrim_clicked()
+{
+    std::default_random_engine generator(std::chrono::system_clock::now().time_since_epoch().count());
+    std::uniform_int_distribution<int>distribuition(0,1000000);
+    auto dice=bind(distribuition,generator);
+    int cityNumber=ui->numberCities->value();
+    int aristasNumber=ui->numberAristas->value();
+    //srand (time(NULL));
+    int val,val2;
+    Ciudad aux;
+    for(int i=0;i<cityNumber;i++){
+        val=dice()%100000;
+        val2=dice()%10;
+        qDebug()<<rand()<<rand();
+        aux.setNombre(getCityName(i));
+        aux.setCosto((double(val)/100.00));
+        aux.setNumeroDeEstrellas(val2);
+        addCity(aux);
+    }
+    addRoutes(cityNumber);
+    addRoutes(aristasNumber-cityNumber);
+    updateAdjacencyTable();
 }

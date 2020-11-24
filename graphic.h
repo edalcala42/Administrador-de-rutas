@@ -32,12 +32,13 @@ public:
     void deleteConnection(QString,QString);
     //void deleteNode(QString);
     void drawPath(QString,QString);
-     //    void drawCustomPath(QString,QString,QPainter);
+    //    void drawCustomPath(QString,QString,QPainter);
     void deletePath(QString,QString);
     void setSelected(QString);
     void showTextNode(QString,QString);
     void hideTextNode(QString,QString);
     void eraseSelected(QString);
+    void changeText(QString,QString,int);
     void clearAll();
     void showWeight();
     void hideWeight();

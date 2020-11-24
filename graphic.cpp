@@ -9,7 +9,7 @@ void Graphic::changedNodeT(int x, int y, int d, QString aux)
 void Graphic::insertNode(QString n)
 {
     if(nodes.count(n))return;
-    srand((unsigned)time(0));
+    //srand((unsigned)time(0));
     int max=(nodes.size()+5)*30;
     int val = (rand()%(max))-max;
     NodeGraphic *nuevo=new NodeGraphic(nodes.size()*30+(nodes.size()*30),val,30,n);
@@ -73,11 +73,16 @@ void Graphic::drawPath(QString a, QString b)
 {
     if(!connections.count(a)||!connections[a].count(b))return;
     QPen p;
-    p.setWidth(2);
+    p.setWidth(4);
     p.setColor(QColor(255,94,153));
     connections[a][b].Line->setPen(p);
     connections[a][b].Text->show();
     path.push_back({a,b});
+    if(!connections.count(b)||!connections[b].count(a))return;
+    connections[b][a].Line->setPen(p);
+   // connections[b][a].Text->show();
+    path.push_back({b,a});
+
 }
 
 void Graphic::deletePath(QString a, QString b)
@@ -112,6 +117,12 @@ void Graphic::eraseSelected(QString a)
 {
     if(!nodes.count(a))return;
     nodes[a]->setOver(false);
+}
+
+void Graphic::changeText(QString a, QString b, int t)
+{
+    if(!connections.count(a)||!connections[a].count(b))return;
+    connections[a][b].Text->setPlainText(QString::number(t));
 }
 
 void Graphic::clearAll()
