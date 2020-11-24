@@ -28,7 +28,6 @@ public:
     Lista_Doblemente_Ligada *GetArregloCiudades();
     int Max();
     int getNumElemCiudades() const;
-    ~TablaHash();
 };
 
 #endif

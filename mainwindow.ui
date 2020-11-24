@@ -24,90 +24,107 @@
        <attribute name="title">
         <string>Generar Valores</string>
        </attribute>
+       <widget class="QLabel" name="label_9">
+        <property name="geometry">
+         <rect>
+          <x>40</x>
+          <y>40</y>
+          <width>121</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Número de ciudades:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_10">
+        <property name="geometry">
+         <rect>
+          <x>40</x>
+          <y>80</y>
+          <width>131</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Número de Rutas:</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btnGenerateTreePrim">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>150</y>
+          <width>301</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Generar ciudad con carreteras de doble sentido</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btnGenerateTreeD">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>200</y>
+          <width>301</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Generar ciudad con carreteras mixtas</string>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="numberCities">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>40</y>
+          <width>141</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="maximum">
+         <number>1000</number>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="numberAristas">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>80</y>
+          <width>141</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="maximum">
+         <number>1000</number>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
         <string>Grafo</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_3">
-        <item row="0" column="0">
-         <widget class="QFrame" name="frame_3">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
+        <item row="5" column="0" rowspan="2" colspan="2">
+         <widget class="QGraphicsView" name="graphicsView"/>
+        </item>
+        <item row="3" column="0" colspan="2">
+         <widget class="QLabel" name="lblprim">
           <property name="maximumSize">
            <size>
-            <width>200</width>
-            <height>200</height>
+            <width>16777215</width>
+            <height>30</height>
            </size>
           </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
+          <property name="text">
+           <string>Tiempo mínimo para la ruta cobertora de la ciudad:</string>
           </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_3">
-           <item>
-            <widget class="QLabel" name="label_3">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Insertar ciudades</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_9">
-             <property name="text">
-              <string>Nombre:</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="lineEdit_Nombre"/>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_10">
-             <property name="text">
-              <string>Costo de hospedaje:</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="lineEdit_Costo"/>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_11">
-             <property name="text">
-              <string>Índice de satisfacción (estrellas):</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="lineEdit_NumeroEstrellas"/>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_AgregarCiudad">
-             <property name="text">
-              <string>Agregar</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
          </widget>
         </item>
-        <item row="0" column="1">
+        <item row="1" column="1">
          <widget class="QFrame" name="frame_4">
           <property name="minimumSize">
            <size>
@@ -117,8 +134,8 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>250</width>
-            <height>200</height>
+            <width>1600000</width>
+            <height>1600000</height>
            </size>
           </property>
           <property name="frameShape">
@@ -128,6 +145,22 @@
            <enum>QFrame::Raised</enum>
           </property>
           <layout class="QFormLayout" name="formLayout_2">
+           <item row="0" column="0" colspan="2">
+            <widget class="QLabel" name="label_5">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Agregar carretera</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
            <item row="1" column="0" colspan="2">
             <widget class="QFrame" name="frame_2">
              <property name="minimumSize">
@@ -138,8 +171,8 @@
              </property>
              <property name="maximumSize">
               <size>
-               <width>16777215</width>
-               <height>50</height>
+               <width>300</width>
+               <height>100</height>
               </size>
              </property>
              <property name="frameShape">
@@ -148,7 +181,7 @@
              <property name="frameShadow">
               <enum>QFrame::Raised</enum>
              </property>
-             <layout class="QHBoxLayout" name="horizontalLayout">
+             <layout class="QVBoxLayout" name="verticalLayout_4">
               <item>
                <widget class="QComboBox" name="cbFrom">
                 <property name="minimumSize">
@@ -206,29 +239,10 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="0" colspan="2">
-            <widget class="QLabel" name="label_5">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Agregar carretera</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
           </layout>
          </widget>
         </item>
-        <item row="2" column="0" rowspan="2" colspan="2">
-         <widget class="QGraphicsView" name="graphicsView"/>
-        </item>
-        <item row="1" column="0" colspan="2">
+        <item row="2" column="0" colspan="2">
          <widget class="QGroupBox" name="groupBox">
           <property name="maximumSize">
            <size>
@@ -243,13 +257,6 @@
            <set>Qt::AlignCenter</set>
           </property>
           <layout class="QGridLayout" name="gridLayout_4">
-           <item row="0" column="2">
-            <widget class="QRadioButton" name="btnShowW">
-             <property name="text">
-              <string>Mostrar Peso</string>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="1">
             <widget class="QRadioButton" name="btnhideW">
              <property name="text">
@@ -264,8 +271,15 @@
              </property>
             </widget>
            </item>
+           <item row="0" column="2">
+            <widget class="QRadioButton" name="btnShowW">
+             <property name="text">
+              <string>Mostrar Peso</string>
+             </property>
+            </widget>
+           </item>
            <item row="1" column="2">
-            <widget class="QPushButton" name="pushButton_2">
+            <widget class="QPushButton" name="btnprim">
              <property name="text">
               <string>Ruta que conecta todas las ciudades</string>
              </property>
@@ -274,8 +288,70 @@
           </layout>
          </widget>
         </item>
-        <item row="0" column="2" rowspan="4">
+        <item row="1" column="0">
+         <widget class="QFrame" name="frame_3">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>300</width>
+            <height>200</height>
+           </size>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <widget class="QLabel" name="label_3">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Insertar ciudades</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_Nombre"/>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_Costo"/>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_NumeroEstrellas"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_AgregarCiudad">
+             <property name="text">
+              <string>Agregar</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="1" column="2" rowspan="6">
          <widget class="QFrame" name="frame">
+          <property name="maximumSize">
+           <size>
+            <width>400</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="frameShape">
            <enum>QFrame::StyledPanel</enum>
           </property>
@@ -286,41 +362,12 @@
            <item>
             <widget class="QTabWidget" name="tabWidget_2">
              <property name="currentIndex">
-              <number>0</number>
+              <number>1</number>
              </property>
              <widget class="QWidget" name="tab_5">
               <attribute name="title">
                <string>Dijkstra</string>
               </attribute>
-              <layout class="QGridLayout" name="gridLayout_2">
-               <item row="0" column="0">
-                <widget class="QLabel" name="label_8">
-                 <property name="text">
-                  <string>Establezca el nodo inicial: </string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="1">
-                <widget class="QSpinBox" name="Nodo_spinBox">
-                 <property name="minimum">
-                  <number>0</number>
-                 </property>
-                 <property name="maximum">
-                  <number>9999</number>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="2">
-                <widget class="QPushButton" name="Dijkstra_pushButton_3">
-                 <property name="text">
-                  <string>Determinar</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="0" colspan="3">
-                <widget class="QPlainTextEdit" name="Dijkstra_plainTextEdit"/>
-               </item>
-              </layout>
              </widget>
              <widget class="QWidget" name="tab_3">
               <attribute name="title">
@@ -337,8 +384,18 @@
                <string>Matriz de adyacencia</string>
               </attribute>
               <layout class="QGridLayout" name="gridLayout_5">
-               <item row="0" column="0">
+               <item row="1" column="0">
                 <widget class="QTableWidget" name="adjacencyTable"/>
+               </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_8">
+                 <property name="text">
+                  <string>Muestra la ruta más corta entre dos ciudades</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>
@@ -420,6 +477,16 @@
           </layout>
          </widget>
         </item>
+        <item row="4" column="0" colspan="2">
+         <widget class="QPlainTextEdit" name="lblpath">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>50</height>
+           </size>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
      </widget>
@@ -432,7 +499,7 @@
      <x>0</x>
      <y>0</y>
      <width>829</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
