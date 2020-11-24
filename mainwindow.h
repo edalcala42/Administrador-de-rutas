@@ -43,6 +43,10 @@ private slots:
 
     void on_btnGenerateTreePrim_clicked();
 
+    void on_numberCities_valueChanged(int arg1);
+
+    void on_btnGenerateTreeD_clicked();
+
 private:
     double getTime(int i,int j);
     Ui::MainWindow *ui;
@@ -59,8 +63,8 @@ private:
     void clearMainWindow();
     std::string getCityName(int n);
     void addCity(Ciudad &);
-    void addRoutes(int );
-    void addAristaNodes(int, int, double);
-    void changeTableAdjacency(int,int,double);
+    void addRoutes(int,int );
+    void addAristaNodes(int, int, int);
+    void changeTableAdjacency(int, int, double);
 };
 #endif // MAINWINDOW_H
