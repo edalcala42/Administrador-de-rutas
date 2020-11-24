@@ -135,3 +135,10 @@ Lista_Doblemente_Ligada *TablaHash::GetArregloCiudades(){
 int TablaHash::Max(){
     return MAX;
 }
+
+TablaHash::~TablaHash()
+{
+    for(int i=0; i<MAX; i++){
+        ArregloCiudades[i].~Lista_Doblemente_Ligada();
+    }
+}
