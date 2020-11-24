@@ -10,30 +10,11 @@ MainWindow::MainWindow(QWidget *parent)
     grafo= new Graphic(ui->graphicsView);
     connect(grafo,SIGNAL(callNodeChanged(QString)),this,SLOT(NodeHasChanged(QString)));
     connect(this->ui->pushButton_AgregarCiudad, SIGNAL(clicked()), this, SLOT(AgregarCiudad()));
+    connect(this->ui->pushButton_DeterminarDijkstra, SIGNAL(clicked()), this, SLOT(DeterminarDijkstra()));
     ui->cbOption->addItem("------>");
     ui->cbOption->addItem("<------");
     ui->cbOption->addItem("<----->");
     srand(unsigned(time(0)));
-    //this->ui->pushButton_AgregarCiudad->clicked(true);
-    /*Lista_Doblemente_Ligada *aux = ciudades.GetArregloCiudades();
-    std::cout << "Ciudades recuperadas: ";
-    aux->Imprimir();
-    for(int i=0; i<aux->size(); i++){
-        for(int j=0; j<aux[i].size(); j++){
-            Ciudad c = aux[i].eliminarAlFinal();
-            std::string str = c.getNombre();
-            QString qstr = QString::fromStdString(str);
-            grafo->insertNode(qstr);
-        }
-    }*/
-    /*grafo->insertNode("A");
-    grafo->insertNode("B");
-    grafo->insertNode("C");
-    grafo->insertNode("D");
-    grafo->addConnection("A","B");
-    grafo->addConnection("B","C");
-    grafo->addConnection("C","D");
-    grafo->addConnection("A","C");*/
     clearMainWindow();
 }
 
@@ -60,12 +41,6 @@ void MainWindow::AgregarCiudad(){
     double costo = this->ui->lineEdit_Costo->text().toDouble();
     unsigned int estrellas = this->ui->lineEdit_NumeroEstrellas->text().toUInt();
     Ciudad aux(nombre, estrellas, costo);
-    //De aqui
-    //datos.push_back(aux);
-    //grafo->insertNode(QString::number(datos.size()));
-    //ActualizarCB();
-    //return;
-    //hasta qui se quita XD
     int s=ciudades.GetSize();
     aux.SetNodo(s);
     if(ciudades.Buscar(aux)!=nullptr){
@@ -74,19 +49,12 @@ void MainWindow::AgregarCiudad(){
     }
     grafo->insertNode(QString::number(ciudades.GetSize()));
     ciudades.InsertarElemento(aux);
-    //ciudades.Imprimir();
-    //GraphClass *grafo=new GraphClass(ui->graphicsView);
-    // QString qstr = QString::fromStdString(nombre);
-    //connect(grafo,SIGNAL(callNodeChanged(QString)),this,SLOT(NodeHasChanged(QString)));
-    //grafo->insertNode(qstr);
     ActualizarCB();
     updateCityTable();
 }
 
 void MainWindow::ActualizarCB()
 {
-    //aqui que itere y que en cada iteracion
-    //agregue el nombre a los combobox.
     ui->cbFrom->clear();
     ui->cbTo->clear();
     Lista_Doblemente_Ligada *aux = ciudades.GetArregloCiudades();
@@ -107,12 +75,6 @@ void MainWindow::ActualizarCB()
             if(node==ciudades.getNumElemCiudades())return;
         }
     }
-    //ui->cbFrom->clear();
-    //ui->cbTo->clear();
-    //for(auto &m:datos){
-    //ui->cbFrom->addItem(QString::fromStdString(m.getNombre()));
-    //ui->cbTo->addItem(QString::fromStdString(m.getNombre()));
-    //}
 }
 
 
@@ -438,6 +400,82 @@ void MainWindow::changeTableAdjacency(int i, int j, double b)
     ui->adjacencyTable->setItem(i+1,j+1,cost);
 }
 
+void MainWindow::Dijkstra(int nodoInicial)
+{
+    QString str;
+        QString ruta;
+        QString flecha;
+        ui->plainTextEdit_Impresion_Dijkstra->setReadOnly(true);
+
+        if(nodoInicial+1 > ciudades.getNumElemCiudades()){
+            QMessageBox::information(this, "Dijkstra", "La ciudad no existe.\n");
+            return;
+        }
+        ui->plainTextEdit_Impresion_Dijkstra->clear();
+        size_t tamanio = matrix.size();
+        double costo[tamanio][tamanio],distancia[tamanio];
+        double mindistance;
+        int visited[tamanio], caminos[tamanio];
+        int count, nextnode, i, j;
+        double costoLeido = 0;
+        int totalDeElementos = ciudades.GetSize();
+        for(i=0; i<totalDeElementos; i++){
+            for(j=0; j<totalDeElementos; j++){
+                costoLeido = getTime(i, j);
+                costo[i][j] = costoLeido;
+            }
+        }
+        for(i=0;i<totalDeElementos;i++) {
+            distancia[i]=costo[nodoInicial][i];
+            caminos[i]=nodoInicial;
+            visited[i]=0;
+        }
+        distancia[nodoInicial]=0;
+        visited[nodoInicial]=1;
+        count=1;
+        while(count<totalDeElementos-1) {
+            mindistance = 9999;
+            for(i=0;i<totalDeElementos;i++){
+                if(distancia[i]<mindistance&&!visited[i]) {
+                    mindistance = distancia[i];
+                    nextnode=i;
+                 }
+            }
+            visited[nextnode]=1;
+            for(i=0;i<totalDeElementos;i++){
+                if(!visited[i]){
+                    if(mindistance+costo[nextnode][i]<distancia[i]) {
+                        distancia[i]=mindistance+costo[nextnode][i];
+                        caminos[i]=nextnode;
+                    }
+                 }
+            }
+            count++;
+        }
+        for(i=0;i<totalDeElementos;i++){
+            if(i != nodoInicial and distancia[i] < 10000) {
+                //if(distancia[i] > 100000){
+
+                //}
+                std::string dist = "\nDistancia del nodo " + std::to_string(i) + " = ";
+                std::string d = std::to_string(distancia[i]);
+                dist.append(d);
+                str = QString::fromStdString(dist);
+                ui->plainTextEdit_Impresion_Dijkstra->insertPlainText(str);
+                std::string r = "\nCon el siguiente camino: " + std::to_string(i);
+                ruta = QString::fromStdString(r);
+                ui->plainTextEdit_Impresion_Dijkstra->insertPlainText(ruta);
+                j=i;
+                do {
+                    j=caminos[j];
+                    std::string fl = "<- " + std::to_string(j);
+                    flecha = QString::fromStdString(fl);
+                    ui->plainTextEdit_Impresion_Dijkstra->insertPlainText(flecha);
+                } while(j!=nodoInicial);
+            }
+        }
+}
+
 void MainWindow::on_btnprim_clicked()
 {
     callPrim(0);
@@ -522,4 +560,10 @@ void MainWindow::on_btnGenerateTreeD_clicked()
     updateAdjacencyTable();
     ActualizarCB();
     updateCityTable();
+}
+
+void MainWindow::DeterminarDijkstra()
+{
+    int nodoInicial = this->ui->spinBox_NodoInicial->text().toInt();
+    Dijkstra(nodoInicial);
 }

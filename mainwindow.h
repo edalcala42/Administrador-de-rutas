@@ -38,7 +38,6 @@ private slots:
 
     void on_btnhideW_clicked();
 
-
     void on_btnprim_clicked();
 
     void on_btnGenerateTreePrim_clicked();
@@ -46,6 +45,8 @@ private slots:
     void on_numberCities_valueChanged(int arg1);
 
     void on_btnGenerateTreeD_clicked();
+
+    void DeterminarDijkstra();
 
 private:
     double getTime(int i,int j);
@@ -66,5 +67,6 @@ private:
     void addRoutes(int,int );
     void addAristaNodes(int, int, int);
     void changeTableAdjacency(int, int, double);
+    void Dijkstra(int nodoInicial);
 };
 #endif // MAINWINDOW_H
