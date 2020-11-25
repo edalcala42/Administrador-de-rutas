@@ -57,6 +57,7 @@ private:
     void updateCityTable();
     void updateAdjacencyTable();
     std::map<int,std::map<int,double>>matrix;
+    bool visitado[100];
     Ciudad getCiudadFromPos(int pos);
     bool isNotdigraph();
     double prim(int n);
@@ -67,6 +68,7 @@ private:
     void addRoutes(int,int );
     void addAristaNodes(int, int, int);
     void changeTableAdjacency(int, int, double);
+    int ObtenerMasCercano(double dist[]);
     void Dijkstra(int nodoInicial);
 };
 #endif // MAINWINDOW_H

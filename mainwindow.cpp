@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include<bits/stdc++.h>
 #include "lista_doblemente_ligada.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -400,80 +401,91 @@ void MainWindow::changeTableAdjacency(int i, int j, double b)
     ui->adjacencyTable->setItem(i+1,j+1,cost);
 }
 
+int MainWindow::ObtenerMasCercano(double dist[]){
+    size_t tam = matrix.size();
+    int size = static_cast<int>(tam);
+    int key = 0 ;
+    double min = INT_MAX ;
+    for(int i=0;i < size ; i++){
+        if(!visitado[i] && dist[i]<min){
+            min = dist[i] ;
+            key = i ;
+        }
+    }
+    return key ;
+}
+
 void MainWindow::Dijkstra(int nodoInicial)
 {
     QString str;
-        QString ruta;
-        QString flecha;
-        ui->plainTextEdit_Impresion_Dijkstra->setReadOnly(true);
+    QString ruta;
+    QString flecha;
+    ui->plainTextEdit_Impresion_Dijkstra->setReadOnly(true);
 
-        if(nodoInicial+1 > ciudades.getNumElemCiudades()){
-            QMessageBox::information(this, "Dijkstra", "La ciudad no existe.\n");
-            return;
-        }
-        ui->plainTextEdit_Impresion_Dijkstra->clear();
-        size_t tamanio = matrix.size();
-        double costo[tamanio][tamanio],distancia[tamanio];
-        double mindistance;
-        int visited[tamanio], caminos[tamanio];
-        int count, nextnode, i, j;
-        double costoLeido = 0;
-        int totalDeElementos = ciudades.GetSize();
-        for(i=0; i<totalDeElementos; i++){
-            for(j=0; j<totalDeElementos; j++){
-                costoLeido = getTime(i, j);
-                costo[i][j] = costoLeido;
-            }
-        }
-        for(i=0;i<totalDeElementos;i++) {
-            distancia[i]=costo[nodoInicial][i];
-            caminos[i]=nodoInicial;
-            visited[i]=0;
-        }
-        distancia[nodoInicial]=0;
-        visited[nodoInicial]=1;
-        count=1;
-        while(count<totalDeElementos-1) {
-            mindistance = 9999;
-            for(i=0;i<totalDeElementos;i++){
-                if(distancia[i]<mindistance&&!visited[i]) {
-                    mindistance = distancia[i];
-                    nextnode=i;
-                 }
-            }
-            visited[nextnode]=1;
-            for(i=0;i<totalDeElementos;i++){
-                if(!visited[i]){
-                    if(mindistance+costo[nextnode][i]<distancia[i]) {
-                        distancia[i]=mindistance+costo[nextnode][i];
-                        caminos[i]=nextnode;
-                    }
-                 }
-            }
-            count++;
-        }
-        for(i=0;i<totalDeElementos;i++){
-            if(i != nodoInicial and distancia[i] < 10000) {
-                //if(distancia[i] > 100000){
+    if(nodoInicial+1 > ciudades.getNumElemCiudades()){
+        QMessageBox::information(this, "Dijkstra", "La ciudad no existe.\n");
+        return;
+    }
+    ui->plainTextEdit_Impresion_Dijkstra->clear();
+    size_t tam = matrix.size();
+    int size = static_cast<int>(tam);
+    double costo[100][100];
+    int par[100];
+    double dist[100];
 
-                //}
-                std::string dist = "\nDistancia del nodo " + std::to_string(i) + " = ";
-                std::string d = std::to_string(distancia[i]);
-                dist.append(d);
-                str = QString::fromStdString(dist);
-                ui->plainTextEdit_Impresion_Dijkstra->insertPlainText(str);
-                std::string r = "\nCon el siguiente camino: " + std::to_string(i);
-                ruta = QString::fromStdString(r);
-                ui->plainTextEdit_Impresion_Dijkstra->insertPlainText(ruta);
-                j=i;
-                do {
-                    j=caminos[j];
-                    std::string fl = "<- " + std::to_string(j);
-                    flecha = QString::fromStdString(fl);
-                    ui->plainTextEdit_Impresion_Dijkstra->insertPlainText(flecha);
-                } while(j!=nodoInicial);
+    for(int q=0; q<size; q++){
+        dist[q] = 9999;
+        visitado[q] = false;
+    }
+
+    double costoLeido=0;
+    for(int z=0; z<size; z++){
+        for(int j=0; j<size; j++){
+            costoLeido = getTime(z, j);
+            costo[z][j] = costoLeido;
+            //dist[z] = 9999;
+        }
+    }
+
+    dist[nodoInicial] =0 ;
+    par[nodoInicial] =-1 ;
+
+    for(int g = 0  ;g<size-1 ; g++){
+        int u = ObtenerMasCercano(dist);
+        visitado[u] = true ;
+        std::cout<< " min = " << u <<std::endl;
+        for(int v =0 ; v< size ;v++){
+            if(!visitado[v] && (dist[u]+costo[u][v]) <  dist[v] && costo[u][v] != 9999)
+            {
+                par[v] = u ;
+                dist[v] = dist[u] + costo[u][v] ;
             }
         }
+    }
+
+    int j=0;
+    for(int i =0 ;i < size ;i++){
+        if(i != nodoInicial) {
+            int caux=i;
+            std::string distancia_a_imprimir = "\nDistancia del nodo " + std::to_string(caux) + " = ";
+            double aux2 = dist[i];
+            std::string d = std::to_string(aux2);
+            distancia_a_imprimir.append(d);
+            str = QString::fromStdString(distancia_a_imprimir);
+            ui->plainTextEdit_Impresion_Dijkstra->insertPlainText(str);
+            std::string r = "\nCon el siguiente camino: " + std::to_string(i);
+            ruta = QString::fromStdString(r);
+            ui->plainTextEdit_Impresion_Dijkstra->insertPlainText(ruta);
+            j=i;
+            do {
+                j=par[j];
+                std::string fl = "<- " + std::to_string(j);
+                flecha = QString::fromStdString(fl);
+                ui->plainTextEdit_Impresion_Dijkstra->insertPlainText(flecha);
+            } while(j!=nodoInicial);
+        }
+    }
+
 }
 
 void MainWindow::on_btnprim_clicked()
