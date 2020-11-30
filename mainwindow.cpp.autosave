@@ -424,7 +424,7 @@ void MainWindow::Dijkstra(int nodoInicial)
                 costoLeido = getTime(i, j);
                 costo[i][j] = costoLeido;
             }
-        }
+        } 
         for(i=0;i<totalDeElementos;i++) {
             distancia[i]=costo[nodoInicial][i];
             caminos[i]=nodoInicial;

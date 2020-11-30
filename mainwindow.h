@@ -10,6 +10,7 @@
 #include<chrono>
 #include<random>
 #include<functional>
+#include<unordered_map>
 #include<set>
 #include<queue>
 #include "graphic.h"
@@ -56,7 +57,7 @@ private:
     //std::vector<Ciudad>datos;
     void updateCityTable();
     void updateAdjacencyTable();
-    std::map<int,std::map<int,double>>matrix;
+    std::unordered_map<int,std::unordered_map<int,double>>matrix;
     Ciudad getCiudadFromPos(int pos);
     bool isNotdigraph();
     double prim(int n);

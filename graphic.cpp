@@ -10,7 +10,7 @@ void Graphic::insertNode(QString n)
 {
     if(nodes.count(n))return;
     //srand((unsigned)time(0));
-    int max=(nodes.size()+5)*30;
+    int max=(8)*30;
     int val = (rand()%(max))-max;
     NodeGraphic *nuevo=new NodeGraphic(nodes.size()*30+(nodes.size()*30),val,30,n);
     nuevo->setZValue(1);
