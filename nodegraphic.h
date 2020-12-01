@@ -16,6 +16,7 @@ private:
     int x,y,tam;
     bool over;
     QString name;
+    QColor color;
 signals:
     void selectedNode(int,int,int,QString);
 public:
@@ -32,6 +33,8 @@ public:
     int getTam() const;
     bool getOver() const;
     void setOver(bool value);
+    QColor getColor() const;
+    void setColor(const QColor &value);
 };
 
 #endif // GRAFO_H

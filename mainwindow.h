@@ -10,9 +10,10 @@
 #include<chrono>
 #include<random>
 #include<functional>
-#include<unordered_map>
 #include<set>
 #include<queue>
+#include<unordered_map>
+#include<stack>
 #include "graphic.h"
 #include "ciudad.h"
 #include "tablahash.h"
@@ -49,15 +50,24 @@ private slots:
 
     void DeterminarDijkstra();
 
+    void on_rbprim_clicked();
+
+    void on_rbclean_clicked();
+
+    void on_rbdijkstra_clicked();
+
 private:
+    int nodoDUpdated;
+    std::unordered_map<int,std::pair<int,double>> tableD;
     double getTime(int i,int j);
     Ui::MainWindow *ui;
     Graphic *grafo;
-    TablaHash ciudades;
+    TablaHash *ciudades;
     //std::vector<Ciudad>datos;
     void updateCityTable();
     void updateAdjacencyTable();
-    std::unordered_map<int,std::unordered_map<int,double>>matrix;
+    std::unordered_map<int,std::map<int,double>>matrix;
+    bool visitado[100];
     Ciudad getCiudadFromPos(int pos);
     bool isNotdigraph();
     double prim(int n);
@@ -68,6 +78,14 @@ private:
     void addRoutes(int,int );
     void addAristaNodes(int, int, int);
     void changeTableAdjacency(int, int, double);
+    int ObtenerMasCercano(double dist[]);
     void Dijkstra(int nodoInicial);
+    void clearAll();
+    std::pair<int,int>selectDij;
+    bool upd;
+    void shortestPath(int b);
+    std::unordered_map<int, std::pair<int, double> > dijkstra(int a);
+    void updateTableDJ(std::vector<std::pair<double, int> > dat, int e);
+    void updateDAlgorithm(int a);
 };
 #endif // MAINWINDOW_H

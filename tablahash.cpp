@@ -5,9 +5,19 @@ int TablaHash::getNumElemCiudades() const
     return NumElemCiudades;
 }
 
+void TablaHash::deleteAll()
+{
+     NumElemCiudades = 0;
+     for(int i = 0; i < MAX; i++){
+         ArregloCiudades[i].deleteAll();
+     }
+}
+
+
 TablaHash::TablaHash()
 {
     NumElemCiudades = 0;
+
 }
 
 int TablaHash::GETCLSID()

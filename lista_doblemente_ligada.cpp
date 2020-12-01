@@ -153,3 +153,16 @@ Lista_Doblemente_Ligada::~Lista_Doblemente_Ligada()
     final.pAnt = &inicio;
     inicio.pSig = &final;
 }
+
+void Lista_Doblemente_Ligada::deleteAll()
+{
+    while(inicio.pSig != &final){
+        Nodo *aux = inicio.pSig;
+        aux->pAnt = nullptr;
+        inicio.pSig = aux->pSig;
+        aux->pSig = nullptr;
+        delete aux;
+    }
+    final.pAnt = &inicio;
+    inicio.pSig = &final;
+}

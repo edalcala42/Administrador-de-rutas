@@ -10,13 +10,23 @@ void Graphic::insertNode(QString n)
 {
     if(nodes.count(n))return;
     //srand((unsigned)time(0));
-    int max=(8)*30;
+    int max=(nodes.size()+5)*30;
+    if(nodes.size()>=13)max=18*30;
     int val = (rand()%(max))-max;
-    NodeGraphic *nuevo=new NodeGraphic(nodes.size()*30+(nodes.size()*30),val,30,n);
+    NodeGraphic *nuevo=new NodeGraphic(nodes.size()*30+(nodes.size()*20),val,30,n);
     nuevo->setZValue(1);
     nodes[n]=nuevo;
     connect(nuevo,SIGNAL(selectedNode(int,int,int,QString)),this,SLOT(changedNodeT(int,int,int,QString)));
     scene->addItem(nuevo);
+}
+
+void Graphic::insertCustomNode(QString a, QColor b)
+{
+    if(!nodes.count(a))return;
+    nodes[a]->setOver(true);
+    selectedNodes.push_back(a);
+    nodes[a]->setColor(b);
+    nodes[a]->update();
 }
 
 void Graphic::addConnection(QString a, QString b, double weight)
@@ -80,7 +90,7 @@ void Graphic::drawPath(QString a, QString b)
     path.push_back({a,b});
     if(!connections.count(b)||!connections[b].count(a))return;
     connections[b][a].Line->setPen(p);
-   // connections[b][a].Text->show();
+    // connections[b][a].Text->show();
     path.push_back({b,a});
 
 }
@@ -128,6 +138,13 @@ void Graphic::changeText(QString a, QString b, int t)
 void Graphic::clearAll()
 {
     scene->clear();
+    connections.clear();
+    selectedNodes.clear();
+    path.clear();
+    nodes.clear();
+    connections.clear();
+    scene->clearFocus();
+
 }
 
 void Graphic::showWeight()

@@ -27,7 +27,7 @@ signals:
     void callNodeChanged(QString);
 public:
     void insertNode(QString);
-    //    void insertCustomNode(QString,QColor,QFont);
+    void insertCustomNode(QString,QColor);
     void addConnection(QString, QString, double);
     void deleteConnection(QString,QString);
     //void deleteNode(QString);

@@ -22,7 +22,18 @@ bool NodeGraphic::getOver() const
 
 void NodeGraphic::setOver(bool value)
 {
+    if(value==false)color=QColor(36,207,213);
     over = value;
+}
+
+QColor NodeGraphic::getColor() const
+{
+    return color;
+}
+
+void NodeGraphic::setColor(const QColor &value)
+{
+    color = value;
 }
 
 NodeGraphic::NodeGraphic()
@@ -31,6 +42,7 @@ NodeGraphic::NodeGraphic()
     x=0;
     y=0;
     tam=20;
+    color=QColor(36,207,213);
 }
 
 NodeGraphic::NodeGraphic(int px, int py, int t, QString n)
@@ -40,6 +52,7 @@ NodeGraphic::NodeGraphic(int px, int py, int t, QString n)
     tam=t;
     over=false;
     name=n;
+    color=QColor(36,207,213);
 }
 
 void NodeGraphic::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
@@ -68,7 +81,7 @@ void NodeGraphic::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     QBrush brush(painter->brush());
     QPen pen(painter->pen());
     if(over)
-        brush.setColor(QColor(36,207,213));
+        brush.setColor(color);
     else
         brush.setColor(QColor(Qt::black));
     brush.setStyle(Qt::SolidPattern);

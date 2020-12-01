@@ -36,6 +36,7 @@ public:
     Iterador &rBegin();
     Iterador &rEnd();
     ~Lista_Doblemente_Ligada();
+    void deleteAll();
     friend class TablaHash;
 
 };
