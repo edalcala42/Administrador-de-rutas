@@ -1,4 +1,4 @@
-# Administrador-de-rutas
+# Administrador de rutas
 En equipo, se implementó una interfaz gráfica (con Qt Creator) con la función de administrar rutas de viaje mediante el ingreso de ciudades y su locación. Cada una ellas cuenta con tres atributos principales:
 Nombre.
 Índice de satisfación.
